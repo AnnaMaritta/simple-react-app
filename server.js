@@ -1,8 +1,10 @@
 const express = require('express');
 const morgan = require('morgan');
+const compression = require('compression');
 const server = express();
 
 server.use(morgan('dev'));
+server.use(compression());
 
 /**
  * Setup static file serving before any other routes
