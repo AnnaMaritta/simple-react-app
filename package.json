@@ -1,0 +1,51 @@
+{
+  "name": "react-example-app",
+  "version": "1.0.0",
+  "description": "Demonstrates usage of React, React Router and Express.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js",
+    "ensure-dirs": "mkdir -p frontend/dist && mkdir -p frontend/dist/scripts && mkdir -p frontend/dist/styles && mkdir -p frontend/dist/assets",
+    "prewatch": "npm run ensure-dirs",
+    "prebuild": "npm run ensure-dirs",
+    "watch": "concurrently -k 'npm run watch-less' 'npm run watch-js' 'npm run watch-assets' 'npm run watch-index'",
+    "watch-js": "watchify frontend/src/scripts/main.js --transform babelify -o frontend/dist/scripts/main.dist.js --verbose --debug",
+    "watch-less": "chokidar 'frontend/src/styles/**/*.less' -c 'npm run build-less'",
+    "build": "npm run copy-index && npm run copy-assets && npm run build-js && npm run build-less",
+    "build-js": "NODE_ENV=production browserify frontend/src/scripts/main.js --transform babelify -o frontend/dist/scripts/main.dist.js --verbose",
+    "build-less": "lessc frontend/src/styles/main.less --verbose | postcss --use autoprefixer > frontend/dist/styles/main.dist.css",
+    "copy-assets": "cp -r frontend/src/assets frontend/dist/assets",
+    "copy-index": "cp frontend/src/index.html frontend/dist/index.html",
+    "watch-assets": "chokidar 'frontend/src/assets/**/*' -c 'npm run copy-assets'",
+    "watch-index": "chokidar 'frontend/src/index.html' -c 'npm run copy-index'"
+  },
+  "author": "Jukka Tupamäki <jukka@lemanse.fi>",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^15.0.2",
+    "react-dom": "^15.0.2",
+    "react-router": "^2.4.0"
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "react"
+    ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.3.6",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-preset-react": "^6.5.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.1",
+    "chokidar-cli": "^1.2.0",
+    "concurrently": "^2.1.0",
+    "express": "^4.13.4",
+    "less": "^2.7.1",
+    "morgan": "^1.7.0",
+    "postcss": "^5.0.21",
+    "postcss-cli": "^2.5.2",
+    "watchify": "^3.7.0"
+  }
+}
