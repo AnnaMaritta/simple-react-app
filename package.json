@@ -12,7 +12,7 @@
     "watch": "concurrently -k 'npm run watch-less' 'npm run watch-js' 'npm run watch-assets' 'npm run watch-index'",
     "watch-js": "watchify frontend/src/scripts/main.js --transform babelify -o frontend/dist/scripts/main.dist.js --verbose --debug",
     "watch-less": "chokidar 'frontend/src/styles/**/*.less' -c 'npm run build-less'",
-    "build": "npm run copy-index && npm run copy-assets && npm run build-js && npm run build-less",
+    "build": "npm run build-js && npm run build-less",
     "build-js": "NODE_ENV=production browserify frontend/src/scripts/main.js --transform babelify -o frontend/dist/scripts/main.dist.js --verbose",
     "build-less": "lessc frontend/src/styles/main.less --verbose | postcss --use autoprefixer > frontend/dist/styles/main.dist.css",
     "copy-assets": "cp -r frontend/src/assets frontend/dist/assets",
