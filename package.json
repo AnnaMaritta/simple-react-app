@@ -12,11 +12,12 @@
     "server": "npm run watch",
     "watch": "concurrently -k 'npm run start' 'npm run watch-less' 'npm run watch-js' 'npm run watch-assets' 'npm run watch-index'",
     "watch-js": "watchify frontend/src/scripts/main.js --transform babelify -p livereactload -o frontend/dist/scripts/main.dist.js --verbose --debug",
+    "prewatch-less": "npm run build-less",
     "watch-less": "chokidar 'frontend/src/styles/**/*.less' -c 'npm run build-less'",
     "build": "npm run build-js && npm run build-less",
     "build-js": "NODE_ENV=production browserify frontend/src/scripts/main.js --transform babelify -o frontend/dist/scripts/main.dist.js --verbose",
     "build-less": "lessc frontend/src/styles/main.less --verbose | postcss --use autoprefixer > frontend/dist/styles/main.dist.css",
-    "copy-assets": "cp -r frontend/src/assets frontend/dist/assets",
+    "copy-assets": "cp -r frontend/src/assets frontend/dist",
     "copy-index": "cp frontend/src/index.html frontend/dist/index.html",
     "watch-assets": "chokidar 'frontend/src/assets/**/*' -c 'npm run copy-assets'",
     "watch-index": "chokidar 'frontend/src/index.html' -c 'npm run copy-index'"
@@ -24,21 +25,31 @@
   "author": "Jukka Tupamäki <jukka@lemanse.fi>",
   "license": "MIT",
   "dependencies": {
-    "react": "^15.0.2",
-    "react-dom": "^15.0.2",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0",
     "react-router": "^2.4.0"
   },
   "babel": {
-    "presets": ["es2015", "react"],
+    "presets": [
+      "es2015",
+      "react"
+    ],
     "env": {
       "development": {
         "plugins": [
-          ["react-transform", {
-            "transforms": [{
-              "transform": "livereactload/babel-transform",
-              "imports": ["react"]
-            }]
-          }]
+          [
+            "react-transform",
+            {
+              "transforms": [
+                {
+                  "transform": "livereactload/babel-transform",
+                  "imports": [
+                    "react"
+                  ]
+                }
+              ]
+            }
+          ]
         ]
       }
     }
@@ -50,6 +61,8 @@
     "babel-preset-react": "^6.5.0",
     "babelify": "^7.3.0",
     "browserify": "^13.0.1",
+    "cheerio": "^0.20.0",
+    "chokidar": "^1.5.2",
     "chokidar-cli": "^1.2.0",
     "compression": "^1.6.2",
     "concurrently": "^2.1.0",
@@ -61,6 +74,7 @@
     "postcss": "^5.0.21",
     "postcss-cli": "^2.5.2",
     "react-proxy": "^1.1.8",
+    "socket.io": "^1.4.6",
     "watchify": "^3.7.0"
   }
 }
